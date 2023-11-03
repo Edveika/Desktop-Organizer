@@ -4,8 +4,6 @@ from threading import Thread
 import platform
 import os
 
-# TODO: if we are moving say audio files and audio dir does not exist, move it to downloads(thats going to be default)
-
 class FileOrganizer:
     def __init__(self):
         # Empty list of desktop files
@@ -116,8 +114,12 @@ class FileOrganizer:
 
     # Moves a list of files to wanted directory
     # After moving the files, will clear the file list
-    def move_files(self, file_list, dst_dir):
+    # If dst dir does not exist, it will default to downloads dir
+    def move_files(self, file_list, dst):
         src_dir = self.desktop_path
+        dst_dir = dst
+        if not os.path.exists(dst):
+            dst_dir = self.download_path
 
         for file in file_list:
             src_file = src_dir + file
