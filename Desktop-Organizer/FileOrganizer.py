@@ -19,6 +19,8 @@ class FileOrganizer:
         self.unknown_files: list[File] = []
         # Gets path of desktop folder based on the OS
         self.get_dir_paths()
+        # Filter files into smaller lists
+        self.filter_files()
     
     # Gets a paths to needed directories based on user's Operating System
     # Downloads and Desktop(obviously) folders are required for the app to work
@@ -130,6 +132,5 @@ class FileOrganizer:
         self.move_files(self.picture_files, self.picture_path)
         self.move_files(self.video_files, self.video_path)
         
-to = FileOrganizer()
-to.filter_files()
-to.run()
+task_organizer = FileOrganizer()
+task_organizer.run()
