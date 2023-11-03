@@ -1,5 +1,5 @@
 from File import File
-from FileTypes import audio_formats, video_formats, picture_formats, document_formats
+from FileTypes import AUDIO_FORMATS, VIDEO_FORMATS, PICTURE_FORMATS, DOCUMENT_FORMATS
 import platform
 import os
 
@@ -100,13 +100,13 @@ class FileOrganizer:
             extension = file[file.rfind("."):].upper()
 
             # Adds the file into the appropriate list
-            if extension in audio_formats:
+            if extension in AUDIO_FORMATS:
                 self.audio_files.append(file)
-            elif extension in video_formats:
+            elif extension in VIDEO_FORMATS:
                 self.video_files.append(file)
-            elif extension in picture_formats:
+            elif extension in PICTURE_FORMATS:
                 self.picture_files.append(file)
-            elif extension in document_formats:
+            elif extension in DOCUMENT_FORMATS:
                 self.document_files.append(file)
             else:
                 self.unknown_files.append(file)

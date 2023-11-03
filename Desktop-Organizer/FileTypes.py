@@ -1,20 +1,20 @@
-audio_formats = [
+AUDIO_FORMATS = [
     ".MP3", ".WAV", ".M4A", ".AAC", ".FLAC", ".OGG", ".WMA", ".AIFF", ".ALAC",
     ".APE", ".AC3", ".AMR", ".DTS", ".AU", ".MP2", ".MKA", ".PCM", ".RA", ".WV", ".TTA"
 ]
 
-video_formats = [
+VIDEO_FORMATS = [
     ".MP4", ".MOV", ".WMV", ".AVI", ".MKV", ".FLV", ".MPEG", ".3GP", ".WEBM",
     ".MPG", ".TS", ".RM", ".VOB", ".MOV", ".AVCHD", ".MTS", ".OGV", ".DIVX",
     ".MPV", ".FLA"
 ]
 
-picture_formats = [
+PICTURE_FORMATS = [
     ".JPG", ".PNG", ".GIF", ".TIFF", ".BMP", ".JPEG", ".RAW", ".PSD", ".PDF",
     ".SVG", ".AI", ".EPS", ".INDD", ".CR2", ".NEF", ".XCF", ".WMF", ".ARW", ".DNG", ".WEBP"
 ]
 
-document_formats = [
+DOCUMENT_FORMATS = [
     ".TXT", ".DOC", ".DOCX", ".RTF", ".ODT", ".PDF", ".XLS", ".XLSX", ".CSV",
     ".PPT", ".PPTX", ".ODP", ".PPS", ".PPSX", ".ODS", ".DOC", ".DOCM", ".DOT",
     ".DOTX", ".WPS", ".WKS", ".WPD", ".HTML", ".HTM", ".XML", ".ODF", ".OTT",
