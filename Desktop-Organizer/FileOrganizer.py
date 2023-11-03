@@ -111,5 +111,25 @@ class FileOrganizer:
             else:
                 self.unknown_files.append(file)
 
+    # Moves a list of files to wanted directory
+    # After moving the files, will clear the file list
+    def move_files(self, file_list, dst_dir):
+        src_dir = self.desktop_path
+
+        for file in file_list:
+            src_file = src_dir + file
+            dst_file = dst_dir + file
+            os.replace(src_file, dst_file)
+        
+        file_list.clear()
+
+    def run(self):
+        self.move_files(self.document_files, self.document_path)
+        self.move_files(self.unknown_files, self.download_path)
+        self.move_files(self.audio_files, self.audio_path)
+        self.move_files(self.picture_files, self.picture_path)
+        self.move_files(self.video_files, self.video_path)
+        
 to = FileOrganizer()
 to.filter_files()
+to.run()
