@@ -1,5 +1,6 @@
 from File import File
 from FileTypes import AUDIO_FORMATS, VIDEO_FORMATS, PICTURE_FORMATS, DOCUMENT_FORMATS
+from threading import Thread
 import platform
 import os
 
@@ -126,11 +127,20 @@ class FileOrganizer:
         file_list.clear()
 
     def run(self):
-        self.move_files(self.document_files, self.document_path)
-        self.move_files(self.unknown_files, self.download_path)
-        self.move_files(self.audio_files, self.audio_path)
-        self.move_files(self.picture_files, self.picture_path)
-        self.move_files(self.video_files, self.video_path)
+        doc_thread = Thread(target=self.move_files, args=(self.document_files, self.document_path))
+        doc_thread.start()
+
+        download_thread = Thread(target=self.move_files, args=(self.unknown_files, self.download_path))
+        download_thread.start()
+
+        audio_thread = Thread(target=self.move_files, args=(self.audio_files, self.audio_path))
+        audio_thread.start()
+
+        pic_thread = Thread(target=self.move_files, args=(self.picture_files, self.picture_path))
+        pic_thread.start()
+
+        vid_thread = Thread(target=self.move_files, args=(self.video_files, self.video_path))
+        vid_thread.start()
         
 task_organizer = FileOrganizer()
 task_organizer.run()
