@@ -11,8 +11,8 @@ class FileOrganizer:
     def __init__(self):
         # Empty list of desktop files
         self.desktop_files: list[File] = []
-        # Will contain desktop folders
-        self.desktop_folders: list[File] = []
+        # Will contain desktop folder and their subfolder files
+        self.folder_files: list[File] = []
         # Desktop files are going to be sorted into smaller lists for moving files to appropriate folders
         self.audio_files: list[File] = []
         self.video_files: list[File] = []
@@ -112,7 +112,7 @@ class FileOrganizer:
     # This is a recursive function that retrieves all of the sub directories from folder_dir
     # This function is called for every sub directory until there is no more sub directories in them
     # Then it returns all of the paths
-    def get_folder_file_paths(self, folder_dir: str) -> list[str]:
+    def get_sub_folder_paths(self, folder_dir: str) -> list[str]:
         # Retrieves sub folders in current directory
         sub_folders = self.get_sub_folders(folder_dir)
         # If there are no more sub folders in this dir, return
@@ -123,7 +123,7 @@ class FileOrganizer:
         sub_sub_folders = []
         for folder in sub_folders:
             # List of paths to sub directories of current directory
-            sub_paths = self.get_folder_file_paths(folder)
+            sub_paths = self.get_sub_folder_paths(folder)
             # If its not empty
             if sub_paths:
                 # Append the sub folders of sub folder list
@@ -135,6 +135,22 @@ class FileOrganizer:
 
         # Returns it, then function down the stack does the same until end is reached
         return sub_folders
+
+    # Returns a list of paths to files in sub folders
+    def get_folder_file_paths(self, dir):
+        # Gets all of the sub directories
+        dirs = self.get_sub_folder_paths(dir)
+
+        # Iterates over all of the sub directories
+        for dir in dirs:
+            # Gets a list of files from the current dir
+            dir_files = os.listdir(dir)
+            # Iterates over every file
+            for file in dir_files:
+                # Checks if the file is not a folder
+                if not os.path.isdir(dir + file):
+                    # If its not, adds it to the list
+                    self.folder_files.append(dir + file)
 
     # Filters the desktop file list into smaller lists
     # Audio files, document files, picture files, video files
@@ -205,4 +221,4 @@ class FileOrganizer:
         vid_thread.start()
         
 task_organizer = FileOrganizer()
-print(task_organizer.get_folder_file_paths("/home/edveika/Desktop/"))
+task_organizer.get_folder_file_paths("/home/edveika/Desktop/")
