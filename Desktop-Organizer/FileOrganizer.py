@@ -1,13 +1,11 @@
 from File import File
-from FileTypes import AUDIO_FORMATS, VIDEO_FORMATS, PICTURE_FORMATS, DOCUMENT_FORMATS
+from FileTypes import AUDIO_FORMATS, VIDEO_FORMATS, PICTURE_FORMATS, DOCUMENT_FORMATS, SHORTCUT_FORMATS
 from threading import Thread
 import platform
 import os
 
 # TODO: whitelist directory that the current app is in(if py files are on desktop for whatever reason, show an error)
 # TODO: ability to organize files that are inside folders
-# TODO: duplicate files: if file/folder exists in dir, rename it to 1 or something
-# TODO: ignrore app icons
 
 class FileOrganizer:
     def __init__(self):
@@ -104,6 +102,9 @@ class FileOrganizer:
             # Thats ok, because all of the file extensions have . prefix in FileTypes.py
             # And even if it does have a file extensions that doesnt match anything, its an unknown file
             extension = file[file.rfind("."):].upper()
+            # App shortcuts/macos apps are going to be ignored
+            if extension in SHORTCUT_FORMATS:
+                continue
 
             # Adds the file into the appropriate list
             if extension in AUDIO_FORMATS:
@@ -129,6 +130,14 @@ class FileOrganizer:
         for file in file_list:
             src_file = src_dir + file
             dst_file = dst_dir + file
+            # If file src_file file exists in dst, (file_num) will be added next to file name
+            file_num = 1
+            # Until we find file_num that does not exist, keep searching
+            while os.path.exists(dst_file):
+                dst_file = dst_dir + file + "(" +str(file_num) + ")"
+                file_num += 1
+
+            # Moves the file from src to dst
             os.replace(src_file, dst_file)
         
         file_list.clear()
