@@ -99,6 +99,43 @@ class FileOrganizer:
             if os.path.isdir(self.desktop_path + file):
                 self.desktop_folders.append(str(file + "/"))
 
+    # Returns a list of sub folders in cur dir
+    def get_sub_folders(self, cur_dir: str) -> list[str]:
+        sub_folders: str = []
+
+        for file in os.listdir(cur_dir):
+            if os.path.isdir(cur_dir + file):
+                sub_folders.append(cur_dir + str(file + "/"))
+        
+        return sub_folders
+
+    # This is a recursive function that retrieves all of the sub directories from folder_dir
+    # This function is called for every sub directory until there is no more sub directories in them
+    # Then it returns all of the paths
+    def get_folder_file_paths(self, folder_dir: str) -> list[str]:
+        # Retrieves sub folders in current directory
+        sub_folders = self.get_sub_folders(folder_dir)
+        # If there are no more sub folders in this dir, return
+        if not sub_folders:
+            return
+
+        # List of subfolders in sub folders
+        sub_sub_folders = []
+        for folder in sub_folders:
+            # List of paths to sub directories of current directory
+            sub_paths = self.get_folder_file_paths(folder)
+            # If its not empty
+            if sub_paths:
+                # Append the sub folders of sub folder list
+                for path in sub_paths:
+                    sub_sub_folders.append(path)
+
+        # Extends the current sub folder list
+        sub_folders.extend(sub_sub_folders)
+
+        # Returns it, then function down the stack does the same until end is reached
+        return sub_folders
+
     # Filters the desktop file list into smaller lists
     # Audio files, document files, picture files, video files
     # If the file has no extension or has some kind of other extension, it will be moved into the downloads folder
@@ -168,4 +205,4 @@ class FileOrganizer:
         vid_thread.start()
         
 task_organizer = FileOrganizer()
-task_organizer.get_desktop_folders()
+print(task_organizer.get_folder_file_paths("/home/edveika/Desktop/"))
