@@ -11,6 +11,8 @@ class FileOrganizer:
     def __init__(self):
         # Empty list of desktop files
         self.desktop_files: list[File] = []
+        # Will contain desktop folders
+        self.desktop_folders: list[File] = []
         # Desktop files are going to be sorted into smaller lists for moving files to appropriate folders
         self.audio_files: list[File] = []
         self.video_files: list[File] = []
@@ -91,6 +93,12 @@ class FileOrganizer:
             case _:
                 raise Exception("Unsupported Operating System")
 
+    # Makes a list of desktop folders
+    def get_desktop_folders(self):
+        for file in os.listdir(self.desktop_path):
+            if os.path.isdir(self.desktop_path + file):
+                self.desktop_folders.append(str(file + "/"))
+
     # Filters the desktop file list into smaller lists
     # Audio files, document files, picture files, video files
     # If the file has no extension or has some kind of other extension, it will be moved into the downloads folder
@@ -160,4 +168,4 @@ class FileOrganizer:
         vid_thread.start()
         
 task_organizer = FileOrganizer()
-task_organizer.organize_files()
+task_organizer.get_desktop_folders()
