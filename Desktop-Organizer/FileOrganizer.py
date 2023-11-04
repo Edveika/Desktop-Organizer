@@ -4,6 +4,11 @@ from threading import Thread
 import platform
 import os
 
+# TODO: whitelist directory that the current app is in(if py files are on desktop for whatever reason, show an error)
+# TODO: ability to organize files that are inside folders
+# TODO: duplicate files: if file/folder exists in dir, rename it to 1 or something
+# TODO: ignrore app icons
+
 class FileOrganizer:
     def __init__(self):
         # Empty list of desktop files
@@ -128,7 +133,8 @@ class FileOrganizer:
         
         file_list.clear()
 
-    def run(self):
+    # Starts a thread for moving earch file type
+    def organize_files(self):
         doc_thread = Thread(target=self.move_files, args=(self.document_files, self.document_path))
         doc_thread.start()
 
@@ -145,4 +151,4 @@ class FileOrganizer:
         vid_thread.start()
         
 task_organizer = FileOrganizer()
-task_organizer.run()
+task_organizer.organize_files()
