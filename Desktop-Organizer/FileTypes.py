@@ -31,3 +31,5 @@ DOCUMENT_FORMATS = [
     ".IBA", ".ICA", ".XPS", ".OXPS", ".PAGES", ".NUMBERS", ".KEY", ".FOLDER",
     ".ZIP", ".RAR", ".7Z", ".TAR", ".GZ", ".BZ2"
 ]
+
+SHORTCUT_FORMATS = [ ".DESKTOP", ".LNK", ".APP" ]
