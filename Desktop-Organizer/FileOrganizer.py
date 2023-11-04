@@ -1,26 +1,24 @@
-from File import File
 from FileTypes import AUDIO_FORMATS, VIDEO_FORMATS, PICTURE_FORMATS, DOCUMENT_FORMATS, SHORTCUT_FORMATS
 from threading import Thread
 import platform
 import os
 
 # TODO: whitelist directory that the current app is in(if py files are on desktop for whatever reason, show an error)
-# TODO: ability to organize files that are inside folders
 
 class FileOrganizer:
     def __init__(self):
         # Empty list of desktop files
-        self.desktop_files: list[File] = []
+        self.desktop_files: list[str] = []
         # Will contain desktop folder and their subfolder files
-        self.folder_files: list[File] = []
+        self.folder_files: list[str] = []
         # Desktop files are going to be sorted into smaller lists for moving files to appropriate folders
-        self.audio_files: list[File] = []
-        self.video_files: list[File] = []
-        self.picture_files: list[File] = []
-        self.document_files: list[File] = []
+        self.audio_files: list[str] = []
+        self.video_files: list[str] = []
+        self.picture_files: list[str] = []
+        self.document_files: list[str] = []
         # Unknown files - files that are not in FileTypes.py and files without extension.
         # Will be moved to Downloads dir
-        self.unknown_files: list[File] = []
+        self.unknown_files: list[str] = []
         # Gets path of desktop folder based on the OS
         self.get_dir_paths()
         # Filter files into smaller lists
@@ -208,8 +206,8 @@ class FileOrganizer:
         doc_thread = Thread(target=self.move_files, args=(self.document_files, self.document_path))
         doc_thread.start()
 
-        download_thread = Thread(target=self.move_files, args=(self.unknown_files, self.download_path))
-        download_thread.start()
+        #download_thread = Thread(target=self.move_files, args=(self.unknown_files, self.download_path))
+        #download_thread.start()
 
         audio_thread = Thread(target=self.move_files, args=(self.audio_files, self.audio_path))
         audio_thread.start()
@@ -222,3 +220,4 @@ class FileOrganizer:
         
 task_organizer = FileOrganizer()
 task_organizer.get_folder_file_paths("/home/edveika/Desktop/")
+task_organizer.organize_files()
