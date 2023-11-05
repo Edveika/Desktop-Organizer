@@ -123,6 +123,7 @@ class FileOrganizer:
     def get_sub_folder_paths(self, folder_dir: str) -> list[str]:
         # Retrieves sub folders in current directory
         sub_folders = self.get_sub_folders(folder_dir)
+        
         # If there are no more sub folders in this dir, return
         if not sub_folders:
             return
@@ -137,6 +138,10 @@ class FileOrganizer:
                 # Append the sub folders of sub folder list
                 for path in sub_paths:
                     sub_sub_folders.append(path)
+
+        # If there are no folders were found, return
+        if not sub_sub_folders:
+            return
 
         # Extends the current sub folder list
         sub_folders.extend(sub_sub_folders)
