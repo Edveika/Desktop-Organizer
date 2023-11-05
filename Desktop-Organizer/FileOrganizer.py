@@ -1,14 +1,19 @@
 from FileTypes import AUDIO_FORMATS, VIDEO_FORMATS, PICTURE_FORMATS, DOCUMENT_FORMATS, SHORTCUT_FORMATS
 from threading import Thread
 import platform
+import shutil
 import os
 
 # TODO: whitelist directory that the current app is in(if py files are on desktop for whatever reason, show an error)
+# TODO: remove spaces from path
 
 class FileOrganizer:
     def __init__(self):
+        # Flag for sorting folders
+        self.sort_folders: bool = True
         # Empty list of desktop files
         self.desktop_files: list[str] = []
+        self.folders: list[str] = []
         # Will contain desktop folder and their subfolder files
         self.folder_files: list[str] = []
         # Desktop files are going to be sorted into smaller lists for moving files to appropriate folders
@@ -21,6 +26,7 @@ class FileOrganizer:
         self.unknown_files: list[str] = []
         # Gets path of desktop folder based on the OS
         self.get_dir_paths()
+        self.get_folder_file_paths(self.desktop_path)
         # Filter files into smaller lists
         self.filter_files()
     
@@ -139,22 +145,31 @@ class FileOrganizer:
         # Gets all of the sub directories
         dirs = self.get_sub_folder_paths(dir)
 
-        # Iterates over all of the sub directories
-        for dir in dirs:
-            # Gets a list of files from the current dir
-            dir_files = os.listdir(dir)
-            # Iterates over every file
-            for file in dir_files:
-                # Checks if the file is not a folder
-                if not os.path.isdir(dir + file):
-                    # If its not, adds it to the list
-                    self.folder_files.append(dir + file)
+        if dirs:
+            # Iterates over all of the sub directories
+            for dir in dirs:
+                # Adds current directory into folders list
+                self.folders.append(dir)
+                # Gets a list of files from the current dir
+                dir_files = os.listdir(dir)
+                # Iterates over every file
+                for file in dir_files:
+                    # Checks if the file is not a folder
+                    if not os.path.isdir(dir + file):
+                        # If its not, adds it to the list
+                        self.folder_files.append(dir + file)
 
     # Filters the desktop file list into smaller lists
     # Audio files, document files, picture files, video files
     # If the file has no extension or has some kind of other extension, it will be moved into the downloads folder
     def filter_files(self): 
         desktop_files = os.listdir(self.desktop_path)
+        # If the user wants to sort sub folder data
+        if self.sort_folders:
+            # Add folder file path list to desktop_files
+            # It does not matter that its not just the file name, extension is found by reading title in reverse
+            if self.folder_files:
+                desktop_files.extend(self.folder_files)
 
         for file in desktop_files:
             # If file has no extension it will return the last char of the file name
@@ -164,6 +179,13 @@ class FileOrganizer:
             # App shortcuts/macos apps are going to be ignored
             if extension in SHORTCUT_FORMATS:
                 continue
+
+            # If we are sorting contents that are inside of the folders
+            if self.sort_folders:
+                # Check if current file is not a folder
+                if str(self.desktop_path + file + "/") in self.folders:
+                    # If it is, dont categorize it, we are going to move all of the data away from it
+                    continue
 
             # Adds the file into the appropriate list
             if extension in AUDIO_FORMATS:
@@ -180,7 +202,7 @@ class FileOrganizer:
     # Moves a list of files to wanted directory
     # After moving the files, will clear the file list
     # If dst dir does not exist, it will default to downloads dir
-    def move_files(self, file_list, dst):
+    def move_files(self, file_list: list[str], dst: str):
         src_dir = self.desktop_path
         dst_dir = dst
         if not os.path.exists(dst):
@@ -189,15 +211,21 @@ class FileOrganizer:
         for file in file_list:
             src_file = src_dir + file
             dst_file = dst_dir + file
+            if os.path.isdir(file[:file.rfind("/")]):
+                src_file = file
+                dst_file = dst_dir + file[file.rfind("/") + 1:]
+
             # If file src_file file exists in dst, (file_num) will be added next to file name
             file_num = 1
             # Until we find file_num that does not exist, keep searching
             while os.path.exists(dst_file):
                 dst_file = dst_dir + file + "(" +str(file_num) + ")"
+                if os.path.isdir(file[:file.rfind("/")]):
+                    dst_file = dst_dir + file[file.rfind("/") + 1:] + "(" +str(file_num) + ")"
                 file_num += 1
 
             # Moves the file from src to dst
-            os.replace(src_file, dst_file)
+            shutil.move(src_file, dst_file)
         
         file_list.clear()
 
@@ -206,18 +234,24 @@ class FileOrganizer:
         doc_thread = Thread(target=self.move_files, args=(self.document_files, self.document_path))
         doc_thread.start()
 
-        #download_thread = Thread(target=self.move_files, args=(self.unknown_files, self.download_path))
-        #download_thread.start()
+        # audio_thread = Thread(target=self.move_files, args=(self.audio_files, self.audio_path))
+        # audio_thread.start()
 
-        audio_thread = Thread(target=self.move_files, args=(self.audio_files, self.audio_path))
-        audio_thread.start()
+        # pic_thread = Thread(target=self.move_files, args=(self.picture_files, self.picture_path))
+        # pic_thread.start()
 
-        pic_thread = Thread(target=self.move_files, args=(self.picture_files, self.picture_path))
-        pic_thread.start()
+        # vid_thread = Thread(target=self.move_files, args=(self.video_files, self.video_path))
+        # vid_thread.start()
 
-        vid_thread = Thread(target=self.move_files, args=(self.video_files, self.video_path))
-        vid_thread.start()
+        # # This is done so the video thread is the last one to execute
+        # # Because download thread moves folders and if user wants data from folders sorted, we first need to move the data from the folders
+        # doc_thread.join()
+        # audio_thread.join()
+        # pic_thread.join()
+        # vid_thread.join()
+
+        # download_thread = Thread(target=self.move_files, args=(self.unknown_files, self.download_path))
+        # download_thread.start()
         
 task_organizer = FileOrganizer()
-task_organizer.get_folder_file_paths("/home/edveika/Desktop/")
 task_organizer.organize_files()
