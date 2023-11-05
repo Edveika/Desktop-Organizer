@@ -11,7 +11,7 @@ class FileOrganizer:
         # Exit flag
         self.exit: bool = False
         # Flag for sorting folders
-        self.sort_folders: bool = True
+        self.sort_folders: bool = False
         # Get path of current file
         self.cur_path = os.path.dirname(os.path.abspath(__file__))
         # Empty list of desktop files
@@ -139,10 +139,6 @@ class FileOrganizer:
                 for path in sub_paths:
                     sub_sub_folders.append(path)
 
-        # If there are no folders were found, return
-        if not sub_sub_folders:
-            return
-
         # Extends the current sub folder list
         sub_folders.extend(sub_sub_folders)
 
@@ -230,16 +226,28 @@ class FileOrganizer:
 
             # If file src_file file exists in dst, (file_num) will be added next to file name
             file_num = 1
-            # Until we find file_num that does not exist, keep searching
-            while os.path.exists(dst_file):
+            def get_file_num(file, num):
                 if os.path.isdir(file[:file.rfind("/")]):
                     file_name = file[file.rfind("/") + 1:]
                     extension = file[file.rfind("."):]
-                    dst_file = dst_dir + file_name[:file_name.rfind(".")] + "(" + str(file_num) + ")" + extension
+                    dst_file = dst_dir + file_name[:file_name.rfind(".")] + "(" + str(num) + ")" + extension
+                    return dst_file
                 else:
                     file_name = file[:file.rfind(".")]
                     extension = file[file.rfind("."):]
-                    dst_file = dst_dir + file_name + "(" + str(file_num) + ")" + extension
+                    dst_file = dst_dir + file_name + "(" + str(num) + ")" + extension
+                    return dst_file
+
+            def get_folder_num(file, num):
+                dst_file = file + "(" + str(num) + ")"
+                return dst_file
+
+            # Until we find file_num that does not exist, keep searching
+            while os.path.exists(dst_file):
+                if os.path.isdir(self.desktop_path + file + "/"):
+                    dst_file = get_folder_num(file, file_num)
+                else:
+                    dst_file = get_file_num(file, file_num)
                 file_num += 1
 
             # Moves the file from src to dst
