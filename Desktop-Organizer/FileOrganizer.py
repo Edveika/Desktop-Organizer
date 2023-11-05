@@ -13,6 +13,7 @@ class FileOrganizer:
         self.sort_folders: bool = True
         # Empty list of desktop files
         self.desktop_files: list[str] = []
+        # List of folders
         self.folders: list[str] = []
         # Will contain desktop folder and their subfolder files
         self.folder_files: list[str] = []
@@ -205,23 +206,28 @@ class FileOrganizer:
     def move_files(self, file_list: list[str], dst: str):
         src_dir = self.desktop_path
         dst_dir = dst
+
+        # If destination folder does not exist, default to the downloads folder
+        # If downloads folder doesnt exist, app will not start
         if not os.path.exists(dst):
             dst_dir = self.download_path
 
         for file in file_list:
-            src_file = src_dir + file
-            dst_file = dst_dir + file
             if os.path.isdir(file[:file.rfind("/")]):
                 src_file = file
                 dst_file = dst_dir + file[file.rfind("/") + 1:]
+            else:
+                src_file = src_dir + file
+                dst_file = dst_dir + file
 
             # If file src_file file exists in dst, (file_num) will be added next to file name
             file_num = 1
             # Until we find file_num that does not exist, keep searching
             while os.path.exists(dst_file):
-                dst_file = dst_dir + file + "(" +str(file_num) + ")"
                 if os.path.isdir(file[:file.rfind("/")]):
                     dst_file = dst_dir + file[file.rfind("/") + 1:] + "(" +str(file_num) + ")"
+                else:
+                    dst_file = dst_dir + file + "(" +str(file_num) + ")"
                 file_num += 1
 
             # Moves the file from src to dst
