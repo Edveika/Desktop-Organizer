@@ -225,9 +225,13 @@ class FileOrganizer:
             # Until we find file_num that does not exist, keep searching
             while os.path.exists(dst_file):
                 if os.path.isdir(file[:file.rfind("/")]):
-                    dst_file = dst_dir + file[file.rfind("/") + 1:] + "(" +str(file_num) + ")"
+                    file_name = file[file.rfind("/") + 1:]
+                    extension = file[file.rfind("."):]
+                    dst_file = dst_dir + file_name[:file_name.rfind(".")] + "(" + str(file_num) + ")" + extension
                 else:
-                    dst_file = dst_dir + file + "(" +str(file_num) + ")"
+                    file_name = file[:file.rfind(".")]
+                    extension = file[file.rfind("."):]
+                    dst_file = dst_dir + file_name + "(" + str(file_num) + ")" + extension
                 file_num += 1
 
             # Moves the file from src to dst
