@@ -226,6 +226,8 @@ class FileOrganizer:
 
             # If file src_file file exists in dst, (file_num) will be added next to file name
             file_num = 1
+            # Returns a file name with a number next to it so there are no same name files on the disk
+            # Example textfile(num).txt
             def get_file_num(file, num):
                 if os.path.isdir(file[:file.rfind("/")]):
                     file_name = file[file.rfind("/") + 1:]
@@ -238,6 +240,8 @@ class FileOrganizer:
                     dst_file = dst_dir + file_name + "(" + str(num) + ")" + extension
                     return dst_file
 
+            # Returns a file with a number next to it to avoid duplicate names
+            # example folder(num)
             def get_folder_num(file, num):
                 dst_file = file + "(" + str(num) + ")"
                 return dst_file
