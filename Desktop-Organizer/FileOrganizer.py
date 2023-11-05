@@ -123,7 +123,7 @@ class FileOrganizer:
     def get_sub_folder_paths(self, folder_dir: str) -> list[str]:
         # Retrieves sub folders in current directory
         sub_folders = self.get_sub_folders(folder_dir)
-        
+
         # If there are no more sub folders in this dir, return
         if not sub_folders:
             return
@@ -257,20 +257,25 @@ class FileOrganizer:
         # Filter files into smaller lists
         self.filter_files()
 
-        doc_thread = Thread(target=self.move_files, args=(self.document_files, self.desktop_path, self.document_path))
-        doc_thread.start()
+        if self.document_files:
+            doc_thread = Thread(target=self.move_files, args=(self.document_files, self.desktop_path, self.document_path))
+            doc_thread.start()
 
-        audio_thread = Thread(target=self.move_files, args=(self.audio_files, self.desktop_path, self.audio_path))
-        audio_thread.start()
+        if self.audio_files:
+            audio_thread = Thread(target=self.move_files, args=(self.audio_files, self.desktop_path, self.audio_path))
+            audio_thread.start()
 
-        pic_thread = Thread(target=self.move_files, args=(self.picture_files, self.desktop_path, self.picture_path))
-        pic_thread.start()
+        if self.picture_files:
+            pic_thread = Thread(target=self.move_files, args=(self.picture_files, self.desktop_path, self.picture_path))
+            pic_thread.start()
 
-        vid_thread = Thread(target=self.move_files, args=(self.video_files, self.desktop_path, self.video_path))
-        vid_thread.start()
+        if self.video_files:
+            vid_thread = Thread(target=self.move_files, args=(self.video_files, self.desktop_path, self.video_path))
+            vid_thread.start()
 
-        download_thread = Thread(target=self.move_files, args=(self.unknown_files, self.desktop_path, self.download_path))
-        download_thread.start()
+        if self.unknown_files:
+            download_thread = Thread(target=self.move_files, args=(self.unknown_files, self.desktop_path, self.download_path))
+            download_thread.start()
 
     def organize_real_time():
         pass
