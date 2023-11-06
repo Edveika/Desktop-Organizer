@@ -10,7 +10,7 @@ VIDEO_FORMATS = [
 ]
 
 PICTURE_FORMATS = [
-    ".JPG", ".PNG", ".GIF", ".TIFF", ".BMP", ".JPEG", ".RAW", ".PSD", ".PDF",
+    ".JPG", ".PNG", ".GIF", ".TIFF", ".BMP", ".JPEG", ".RAW", ".PSD",
     ".SVG", ".AI", ".EPS", ".INDD", ".CR2", ".NEF", ".XCF", ".WMF", ".ARW", ".DNG", ".WEBP"
 ]
 
@@ -29,7 +29,7 @@ DOCUMENT_FORMATS = [
     ".MOBI", ".AZW", ".AZW3", ".FB2", ".CBZ", ".CBR", ".CBT", ".CB7", ".PDB",
     ".PML", ".TCR", ".LIT", ".LRF", ".ACSM", ".SNB", ".LRX", ".DJVU", ".DJV",
     ".IBA", ".ICA", ".XPS", ".OXPS", ".PAGES", ".NUMBERS", ".KEY", ".FOLDER",
-    ".ZIP", ".RAR", ".7Z", ".TAR", ".GZ", ".BZ2"
+    ".ZIP", ".RAR", ".7Z", ".TAR", ".GZ", ".BZ2", ".PDF"
 ]
 
 SHORTCUT_FORMATS = [ ".DESKTOP", ".LNK", ".APP" ]
