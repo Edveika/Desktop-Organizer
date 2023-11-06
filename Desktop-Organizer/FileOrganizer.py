@@ -2,6 +2,7 @@ from FileTypes import AUDIO_FORMATS, VIDEO_FORMATS, PICTURE_FORMATS, DOCUMENT_FO
 from threading import Thread
 import platform
 import shutil
+import time
 import os
 
 # TODO: folders dont have extensions, fix move_files()
@@ -10,6 +11,8 @@ class FileOrganizer:
     def __init__(self):
         # Exit flag
         self.exit: bool = False
+        # Real time organize flag
+        self.real_time: bool = True
         # Flag for sorting folders
         self.sort_folders: bool = False
         # Get path of current file
@@ -289,8 +292,16 @@ class FileOrganizer:
             download_thread = Thread(target=self.move_files, args=(self.unknown_files, self.desktop_path, self.download_path))
             download_thread.start()
 
-    def organize_real_time():
-        pass
+    def organize_real_time(self):
+        # If exit flag is not set
+        while not self.exit:
+            # Wait until the user selectes real time sorting
+            while self.real_time:
+                # Organize files every half a second to save some resources
+                self.organize_files()
+                time.sleep(0.5)
+        # Sleep for half a second to save some resources
+        time.sleep(0.5)
         
 task_organizer = FileOrganizer()
-task_organizer.organize_files()
+task_organizer.organize_real_time()
