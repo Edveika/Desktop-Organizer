@@ -1,11 +1,14 @@
 from FileOrganizer import FileOrganizer
 from PySide6 import QtWidgets, QtGui
+import threading
 import sys
 
 class SystemTray:
     def __init__(self):
         # Todo: message box in case of exception
         self.file_organizer = FileOrganizer()
+        sort_thread = threading.Thread(target=self.file_organizer.organize_real_time)
+        sort_thread.start()
 
         # Creates a system tray and adds 4 elements to it:
         # Checkmark - to check if user wants to auto organize files
@@ -30,7 +33,7 @@ class SystemTray:
             organize_desktop.triggered.connect(self.file_organizer.organize_files)
 
             exit_btn = menu.addAction("Exit")
-            exit_btn.triggered.connect(exit)
+            exit_btn.triggered.connect(self.close_system_tray)
 
             system_tray.setToolTip("Right click to access settings")
             system_tray.setContextMenu(menu)
@@ -39,16 +42,19 @@ class SystemTray:
 
         create_system_tray()
 
+    # Sets the file organizer's auto sort flag
     def set_auto_organize(self, checkmark: QtGui.QAction):
-        if checkmark.isChecked():
-            print("checked")
-        else:
-            print("unchecked")
+        self.file_organizer.set_auto_sort(checkmark.isChecked())
 
+    # Sets the file organizer's sort folders flag
     def set_organize_folders(self, checkmark: QtGui.QAction):
-        if checkmark.isChecked():
-            print("checked")
-        else:
-            print("unchecked")
+        self.file_organizer.set_sort_folders(checkmark.isChecked())
+
+    # Closes the application
+    def close_system_tray(self):
+        # Sets the exit flag for the real time file organize loop
+        self.file_organizer.set_exit_flag()
+        # Closes the app
+        exit()
 
 tray = SystemTray()
