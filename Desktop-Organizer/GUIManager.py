@@ -2,6 +2,7 @@ from FileOrganizer import FileOrganizer
 from PySide6 import QtWidgets, QtGui
 import threading
 import sys
+import os
 
 class SystemTray:
     def __init__(self):
@@ -10,6 +11,8 @@ class SystemTray:
         sort_thread = threading.Thread(target=self.file_organizer.organize_real_time)
         sort_thread.start()
 
+        self.cur_path = os.path.dirname(os.path.abspath(__file__)) + "/"
+
         # Creates a system tray and adds 4 elements to it:
         # Checkmark - to check if user wants to auto organize files
         # Second checkmark - to allow the user to choose if he wants to sort contents that are inside the folders
@@ -17,8 +20,8 @@ class SystemTray:
         # Button to exit
         def create_system_tray():
             nonlocal self
-            app = QtWidgets.QApplication([])
-            system_tray = QtWidgets.QSystemTrayIcon(QtGui.QIcon("icon.png"), app)
+            app = QtWidgets.QApplication(sys.argv)
+            system_tray = QtWidgets.QSystemTrayIcon(QtGui.QIcon(self.cur_path + "organizer.png"), app)
             menu = QtWidgets.QMenu()
 
             auto_organize = menu.addAction("Auto-Organize")
