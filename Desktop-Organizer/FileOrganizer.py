@@ -12,7 +12,7 @@ class FileOrganizer:
         # Exit flag
         self.exit: bool = False
         # Real time organize flag
-        self.real_time: bool = True
+        self.real_time: bool = False
         # Flag for sorting folders
         self.sort_folders: bool = False
         # Get path of current file
@@ -302,6 +302,15 @@ class FileOrganizer:
                 time.sleep(0.5)
         # Sleep for half a second to save some resources
         time.sleep(0.5)
-        
-# task_organizer = FileOrganizer()
-# task_organizer.organize_files()
+
+    # Sets the exit flag that stops the mainloop of real time sorting
+    def set_exit_flag(self):
+        self.exit = True
+
+    # Sets the folder sort flag
+    def set_sort_folders(self, value: bool):
+        self.sort_folders = value
+
+    # Sets the real time sorting flag
+    def set_auto_sort(self, value: bool):
+        self.real_time = value
