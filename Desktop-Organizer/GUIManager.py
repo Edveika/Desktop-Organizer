@@ -3,6 +3,20 @@ from FileOrganizer import FileOrganizer
 import sys
 import os
 
+class MessageBox:
+    def __init__(self):
+        pass
+
+    # Shows a message in messagebox with selected title
+    def show_messagebox(self, title, message):
+        # QApplication has to be constructed before QtWidget
+        app = QtWidgets.QApplication([])
+        # Create messagebox
+        message_box = QtWidgets.QMessageBox()
+        message_box.setWindowTitle(title)
+        message_box.setText(message)
+        message_box.exec()
+
 class SystemTray:
     def __init__(self, file_organizer: FileOrganizer):
         # Reference to file organizer instance
@@ -19,6 +33,8 @@ class SystemTray:
             nonlocal self
             app = QtWidgets.QApplication(sys.argv)
             system_tray = QtWidgets.QSystemTrayIcon(QtGui.QIcon(self.cur_path + "organizer.png"), app)
+            if not system_tray.isSystemTrayAvailable():
+                raise Exception("Your system does not support QSystemTrayIcon functionality")
             menu = QtWidgets.QMenu()
 
             auto_organize = menu.addAction("Auto-Organize")
