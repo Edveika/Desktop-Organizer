@@ -13,6 +13,7 @@ Desktop organizer is a Python application that organizes your desktop files. It 
 # Dependencies
 
 ``PySide6``
+
 ``Python 3.6 or later``
 
 # License
