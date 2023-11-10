@@ -5,8 +5,6 @@ import shutil
 import time
 import os
 
-# TODO: folders dont have extensions, fix move_files()
-
 class FileOrganizer:
     def __init__(self):
         # Exit flag

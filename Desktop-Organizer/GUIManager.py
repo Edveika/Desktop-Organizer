@@ -1,16 +1,13 @@
-from FileOrganizer import FileOrganizer
 from PySide6 import QtWidgets, QtGui
-import threading
+from FileOrganizer import FileOrganizer
 import sys
 import os
 
 class SystemTray:
-    def __init__(self):
-        # Todo: message box in case of exception
-        self.file_organizer = FileOrganizer()
-        sort_thread = threading.Thread(target=self.file_organizer.organize_real_time)
-        sort_thread.start()
-
+    def __init__(self, file_organizer: FileOrganizer):
+        # Reference to file organizer instance
+        self.file_organizer = file_organizer
+        # Gets the path of the current file
         self.cur_path = os.path.dirname(os.path.abspath(__file__)) + "/"
 
         # Creates a system tray and adds 4 elements to it:
@@ -59,5 +56,3 @@ class SystemTray:
         self.file_organizer.set_exit_flag()
         # Closes the app
         exit()
-
-tray = SystemTray()
