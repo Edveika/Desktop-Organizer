@@ -257,8 +257,6 @@ class FileOrganizer:
 
             # Moves the file from src to dst
             shutil.move(src_file, dst_file)
-            # File was moved, remove it from the list
-            file_list.remove(file)
 
         file_list.clear()
 
