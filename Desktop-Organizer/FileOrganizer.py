@@ -33,7 +33,7 @@ class FileOrganizer:
         self.get_dir_paths()
         # If current application's folder is on the desktop, throw an exception
         if self.desktop_path in self.cur_path:
-            raise Exception("Desktop Organizer's folder is on the desktop")
+            raise Exception("Desktop Organizer's folder is on the desktop. Move it elsewhere")
     
     # Gets a paths to needed directories based on user's Operating System
     # Downloads and Desktop(obviously) folders are required for the app to work
@@ -50,11 +50,11 @@ class FileOrganizer:
                     return None
 
                 if not get_path_windows("Desktop/"):
-                    raise Exception("Desktop directory does not exist")
+                    raise Exception("Desktop directory does not exist, it is required for the app to run")
                 self.desktop_path = get_path_windows("Desktop/")
 
                 if not get_path_windows("Downloads/"):
-                    raise Exception("Downloads directory does not exist")
+                    raise Exception("Downloads directory does not exist, it is required for the app to run")
                 self.download_path = get_path_windows("Downloads/")
 
                 self.document_path = get_path_windows("Documents/")
@@ -68,11 +68,11 @@ class FileOrganizer:
                     return None
 
                 if not get_path_linux("Desktop/"):
-                    raise Exception("Desktop directory does not exist")
+                    raise Exception("Desktop directory does not exist, it is required for the app to run")
                 self.desktop_path = get_path_linux("Desktop/")
 
                 if not get_path_linux("Downloads/"):
-                    raise Exception("Downloads directory does not exist")
+                    raise Exception("Downloads directory does not exist, it is required for the app to run")
                 self.download_path = get_path_linux("Downloads/")
 
                 self.document_path = get_path_linux("Documents/")
@@ -86,11 +86,11 @@ class FileOrganizer:
                     return None
 
                 if not get_path_macos("~/Desktop/"):
-                    raise Exception("Desktop directory does not exist")
+                    raise Exception("Desktop directory does not exist, it is required for the app to run")
                 self.desktop_path = get_path_macos("~/Desktop/")
 
                 if not get_path_macos("~/Downloads/"):
-                    raise Exception("Downloads directory does not exist")
+                    raise Exception("Downloads directory does not exist, it is required for the app to run")
                 self.desktop_path = get_path_macos("~/Downloads/")
 
                 self.document_path = get_path_macos("~/Documents/")
@@ -257,7 +257,9 @@ class FileOrganizer:
 
             # Moves the file from src to dst
             shutil.move(src_file, dst_file)
-        
+            # File was moved, remove it from the list
+            file_list.remove(file)
+
         file_list.clear()
 
     # Starts a thread for moving earch file type
