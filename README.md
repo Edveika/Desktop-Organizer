@@ -1,6 +1,6 @@
 # Desktop-Organizer
 
-Desktop organizer is a Python application that organizes your desktop files. It has QT system tray that provides an easy way to interface with the program.
+Desktop organizer is a Python application that organizes your desktop files. It has QT system tray that provides an easy way to interact with the program.
 
 # Features
 
