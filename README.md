@@ -1,8 +1,8 @@
-# Desktop-Organizer
+# 🖥️ Desktop-Organizer
 
 Desktop organizer is a Python application that organizes your desktop files. It has QT system tray that provides an easy way to interact with the program.
 
-# Features
+# 🔥 Features
 
 * Manual sorting - sort files once with a click of a button
 * Real-Time sorting - sorts files in real time
@@ -10,12 +10,12 @@ Desktop organizer is a Python application that organizes your desktop files. It 
 * Cross-Platform Compatibility: supports Windows, Linux, and macOS.
 * System tray - allows you to customize sorting settings
 
-# Dependencies
+# 📑 Dependencies
 
 ``PySide6``
 
 ``Python 3.6 or later``
 
-# License
+# 📜 License
 
 This project is licensed under the GPL v2 [LICENSE](LICENSE).
