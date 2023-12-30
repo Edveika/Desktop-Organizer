@@ -28,6 +28,11 @@ Desktop organizer is a Python application that organizes your desktop files. It 
 python3 App.py
 ```
 
+# 🏗️ TODO
+
+* Save settings in a file. If user enables real time sorting and reboots he will not need to reenable it.
+* GUI to whitelist files/undo actions
+
 # ⌨️ Cool code showcase
 
 * Recursive function that finds all subfolders from folder_dir. Super proud of this one.
