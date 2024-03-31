@@ -6,28 +6,48 @@ import json
 
 class SettingsCache:
   def __init__(self) -> None:
-    self.get_cache_path()
-  
-  def get_cache_path(self): 
-    os_name = platform.system()
+    def get_cache_path(): 
+      os_name = platform.system()
 
-    match os_name:
-      case "Windows": self.cache_path = dirs.WINDOWS_SETTINGS_DIR
-      case "Linux": self.cache_path = dirs.LINUX_SETTINGS_DIR
-      case "Darwin": self.cache_path = dirs.MACOS_SETTINGS_DIR
-      case _:
-        raise Exception("Unsupported Operating System")
-      
+      match os_name:
+        case "Windows": self.cache_path = dirs.WINDOWS_SETTINGS_DIR
+        case "Linux": self.cache_path = dirs.LINUX_SETTINGS_DIR
+        case "Darwin": self.cache_path = dirs.MACOS_SETTINGS_DIR
+        case _:
+          raise Exception("Unsupported Operating System")
+
+    # Gets cache dir based on os
+    get_cache_path()
+
+    # If cache dir does not exist, creates it
     if not os.path.exists(self.cache_path):
       os.mkdir(self.cache_path)
-      
+
+    # Full path to the cache file
+    self.CACHE_FILE_PATH = str(self.cache_path + dirs.CACHE_FILE_NAME)
+
+  # Saves a setting to a file 
   def save_setting(self, setting: Setting):
-    with open(str(self.cache_path + dirs.CACHE_FILE_NAME), "w") as cache_file:
-      value = {
-        "name": setting.get_name(),
-        "value": setting.get_value()
-      }
-      json.dump(value, cache_file)
-  
-  def get_setting(self, setting: Setting) :
-    pass
+    # Load data
+    data = json.load(open(self.CACHE_FILE_PATH, "r"))
+
+    # Overwrite existing name value or add it to the dict
+    data[setting.get_name()] = setting.get_value()
+
+    # Dict to json and to file
+    json.dump(data, open(self.CACHE_FILE_PATH, "w"))
+
+  def get_settings(self):
+    # Load data
+    data = json.load(open(str(self.cache_path + dirs.CACHE_FILE_NAME), "r"))
+
+    
+    
+
+sett = Setting("switch", "0")
+set = Setting("asd", "1")
+
+manager = SettingsCache()
+manager.save_setting(sett)
+manager.save_setting(set)
+manager.get_settings()
