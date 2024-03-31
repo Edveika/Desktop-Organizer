@@ -4,7 +4,7 @@ import dirs
 import os
 import json
 
-class SettingsCache:
+class CacheManager:
   def __init__(self) -> None:
     def get_cache_path(): 
       os_name = platform.system()
@@ -37,11 +37,11 @@ class SettingsCache:
     # Dict to json and to file
     json.dump(data, open(self.CACHE_FILE_PATH, "w"))
 
-
-  def get_settings(self):
+  # Returns a list of Setting objects from a JSON file
+  def get_settings(self) -> list[Setting]:
     # Load data
     data = json.load(open(str(self.cache_path + dirs.CACHE_FILE_NAME), "r"))
-    settings: Setting = []
+    settings: list[Setting] = []
 
     # Create a list of settings from json data
     for key in data:
