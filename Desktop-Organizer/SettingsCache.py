@@ -22,10 +22,12 @@ class SettingsCache:
       os.mkdir(self.cache_path)
       
   def save_setting(self, setting: Setting):
-    print(str(self.cache_path + dirs.CACHE_FILE_NAME))
     with open(str(self.cache_path + dirs.CACHE_FILE_NAME), "w") as cache_file:
       value = {
         "name": setting.get_name(),
         "value": setting.get_value()
       }
       json.dump(value, cache_file)
+  
+  def get_setting(self, setting: Setting) :
+    pass
