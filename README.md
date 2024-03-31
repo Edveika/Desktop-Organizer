@@ -1,3 +1,5 @@
+![Screenshot from 2024-03-31 15-22-25](https://github.com/Edveika/Desktop-Organizer/assets/113787144/0c524c70-c493-471d-b9ae-0ca58f1b2a6a)
+
 # 🖥️ Desktop-Organizer
 
 Desktop organizer is a Python application that organizes your desktop files. It has QT system tray that provides an easy way to interact with the program.
