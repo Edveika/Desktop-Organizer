@@ -18,6 +18,7 @@ Desktop organizer is a Python application that organizes your desktop files. It 
 * threading
 * platform
 * shutil
+* json
 * time
 * sys
 * os
