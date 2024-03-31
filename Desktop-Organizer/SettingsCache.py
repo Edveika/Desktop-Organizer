@@ -37,17 +37,15 @@ class SettingsCache:
     # Dict to json and to file
     json.dump(data, open(self.CACHE_FILE_PATH, "w"))
 
+
   def get_settings(self):
     # Load data
     data = json.load(open(str(self.cache_path + dirs.CACHE_FILE_NAME), "r"))
+    settings: Setting = []
 
-    
-    
+    # Create a list of settings from json data
+    for key in data:
+      settings.append(Setting(str(key), str(data[key])))
 
-sett = Setting("switch", "0")
-set = Setting("asd", "1")
-
-manager = SettingsCache()
-manager.save_setting(sett)
-manager.save_setting(set)
-manager.get_settings()
+    # Return settings list
+    return settings
