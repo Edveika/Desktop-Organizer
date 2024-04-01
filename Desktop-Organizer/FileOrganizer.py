@@ -314,11 +314,8 @@ class FileOrganizer:
     # Sets the folder sort flag
     def set_sort_folders(self, value: bool):
         self.sort_folders = value
-        tmpSet = Setting("sort_folders", "0")
-        self.cache_manager.save_setting(tmpSet)
+        self.cache_manager.save_setting(Setting("sort_folders", int(value)))
 
     # Sets the real time sorting flag
     def set_auto_sort(self, value: bool):
         self.real_time = value
-        # tmpSet = Setting("real_time_sort", str(value))
-        # self.cache_manager.save_setting(tmpSet)
