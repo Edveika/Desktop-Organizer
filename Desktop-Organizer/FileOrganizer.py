@@ -319,3 +319,4 @@ class FileOrganizer:
     # Sets the real time sorting flag
     def set_auto_sort(self, value: bool):
         self.real_time = value
+        self.cache_manager.save_setting(Setting("auto_sort", int(value)))
