@@ -29,7 +29,12 @@ class CacheManager:
   # Saves a setting to a file 
   def save_setting(self, setting: Setting):
     # Load data
-    data = json.load(open(self.CACHE_FILE_PATH, "r"))
+    data = {}
+    try:
+      with open(self.CACHE_FILE_PATH, "r") as file:
+        data = json.load(file)
+    except json.decoder.JSONDecodeError:
+      pass
 
     # Overwrite existing name value or add it to the dict
     data[setting.get_name()] = setting.get_value()
@@ -49,3 +54,12 @@ class CacheManager:
 
     # Return settings list
     return settings
+  
+setting = Setting("test", "0")
+
+manager = CacheManager()
+# manager.save_setting(setting)
+
+settings = manager.get_settings()
+
+print(settings[0].get_name())

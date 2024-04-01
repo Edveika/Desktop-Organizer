@@ -1,5 +1,7 @@
 from FileTypes import AUDIO_FORMATS, VIDEO_FORMATS, PICTURE_FORMATS, DOCUMENT_FORMATS, SHORTCUT_FORMATS
 from threading import Thread
+from Setting import Setting
+from CacheManager import CacheManager
 import platform
 import shutil
 import time
@@ -34,6 +36,10 @@ class FileOrganizer:
         # If current application's folder is on the desktop, throw an exception
         if self.desktop_path in self.cur_path:
             raise Exception("Desktop Organizer's folder is on the desktop. Move it elsewhere")
+        
+        self.cache_manager = CacheManager()
+
+        # cache_settings: list[Setting] = self.cache_manager.get_settings()
     
     # Gets a paths to needed directories based on user's Operating System
     # Downloads and Desktop(obviously) folders are required for the app to work
@@ -308,7 +314,11 @@ class FileOrganizer:
     # Sets the folder sort flag
     def set_sort_folders(self, value: bool):
         self.sort_folders = value
+        tmpSet = Setting("sort_folders", "0")
+        self.cache_manager.save_setting(tmpSet)
 
     # Sets the real time sorting flag
     def set_auto_sort(self, value: bool):
         self.real_time = value
+        # tmpSet = Setting("real_time_sort", str(value))
+        # self.cache_manager.save_setting(tmpSet)
