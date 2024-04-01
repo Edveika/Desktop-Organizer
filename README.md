@@ -11,6 +11,7 @@ Desktop organizer is a Python application that organizes your desktop files. It 
 * File categorization - classifies files into categories such as audio, video, pictures, documents, and more.
 * Cross-Platform Compatibility: supports Windows, Linux, and macOS.
 * System tray - allows you to customize sorting settings
+* Persistency - setting toggles are saved into a JSON file
 
 # 📔 Libraries used
 
@@ -30,11 +31,6 @@ Desktop organizer is a Python application that organizes your desktop files. It 
 ```
 python3 App.py
 ```
-
-# 🏗️ TODO
-
-* Save settings in a file. If user enables real time sorting and reboots he will not need to reenable it.
-* GUI to whitelist files/undo actions
 
 # ⌨️ Cool code showcase
 
