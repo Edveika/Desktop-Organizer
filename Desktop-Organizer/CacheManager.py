@@ -52,11 +52,5 @@ class CacheManager:
     except json.decoder.JSONDecodeError:
       return None
 
-    settings: list[Setting] = []
-
-    # Create a list of settings from json data
-    for key in data:
-      settings.append(Setting(str(key), str(data[key])))
-
     # Return settings list
-    return settings
+    return data
