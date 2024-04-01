@@ -28,8 +28,8 @@ class CacheManager:
 
     # Ensures cache file is created
     if not os.path.exists(self.CACHE_FILE_PATH):
-       f = open(self.CACHE_FILE_PATH, "a")
-       f.close()
+        with open(self.CACHE_FILE_PATH, 'w'):
+          pass
 
   # Saves a setting to a file 
   def save_setting(self, setting: Setting):
