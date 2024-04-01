@@ -45,7 +45,13 @@ class CacheManager:
   # Returns a list of Setting objects from a JSON file
   def get_settings(self) -> list[Setting]:
     # Load data
-    data = json.load(open(str(self.cache_path + dirs.CACHE_FILE_NAME), "r"))
+    data = {}
+    try:
+      with open(str(self.cache_path + dirs.CACHE_FILE_NAME)) as file:
+        data = json.load(file)
+    except json.decoder.JSONDecodeError:
+      return None
+
     settings: list[Setting] = []
 
     # Create a list of settings from json data
@@ -54,12 +60,3 @@ class CacheManager:
 
     # Return settings list
     return settings
-  
-setting = Setting("test", "0")
-
-manager = CacheManager()
-# manager.save_setting(setting)
-
-settings = manager.get_settings()
-
-print(settings[0].get_name())
