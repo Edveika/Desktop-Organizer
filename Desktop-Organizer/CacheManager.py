@@ -43,7 +43,7 @@ class CacheManager:
     json.dump(data, open(self.CACHE_FILE_PATH, "w"))
 
   # Returns a list of Setting objects from a JSON file
-  def get_settings(self) -> list[Setting]:
+  def get_settings(self):
     # Load data
     data = {}
     try:
