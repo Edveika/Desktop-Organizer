@@ -62,8 +62,10 @@ class SystemTray:
                 if not settings:
                     return
                 
-                self.auto_organize.setChecked(bool(settings["auto_sort"]))
-                self.organize_folders.setChecked(bool(settings["sort_folders"]))
+                if "auto_sort" in settings:
+                    self.auto_organize.setChecked(bool(settings["auto_sort"]))
+                if "sort_folders" in settings:
+                    self.organize_folders.setChecked(bool(settings["sort_folders"]))
 
             load_settings()
 

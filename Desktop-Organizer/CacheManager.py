@@ -26,6 +26,11 @@ class CacheManager:
     # Full path to the cache file
     self.CACHE_FILE_PATH = str(self.cache_path + dirs.CACHE_FILE_NAME)
 
+    # Ensures cache file is created
+    if not os.path.exists(self.CACHE_FILE_PATH):
+       f = open(self.CACHE_FILE_PATH, "a")
+       f.close()
+
   # Saves a setting to a file 
   def save_setting(self, setting: Setting):
     # Load data
@@ -50,6 +55,8 @@ class CacheManager:
       with open(str(self.cache_path + dirs.CACHE_FILE_NAME)) as file:
         data = json.load(file)
     except json.decoder.JSONDecodeError:
+      return None
+    except FileNotFoundError:
       return None
 
     # Return settings list
