@@ -1,7 +1,5 @@
 from FileTypes import AUDIO_FORMATS, VIDEO_FORMATS, PICTURE_FORMATS, DOCUMENT_FORMATS, SHORTCUT_FORMATS
 from threading import Thread
-from Setting import Setting
-from CacheManager import CacheManager
 import platform
 import shutil
 import time
@@ -36,10 +34,6 @@ class FileOrganizer:
         # If current application's folder is on the desktop, throw an exception
         if self.desktop_path in self.cur_path:
             raise Exception("Desktop Organizer's folder is on the desktop. Move it elsewhere")
-        
-        self.cache_manager = CacheManager()
-
-        # cache_settings: list[Setting] = self.cache_manager.get_settings()
     
     # Gets a paths to needed directories based on user's Operating System
     # Downloads and Desktop(obviously) folders are required for the app to work
@@ -297,15 +291,11 @@ class FileOrganizer:
             download_thread.start()
 
     def organize_real_time(self):
-        # If exit flag is not set
-        while not self.exit:
-            # Wait until the user selectes real time sorting
-            while self.real_time:
-                # Organize files every half a second to save some resources
-                self.organize_files()
-                time.sleep(0.5)
-        # Sleep for half a second to save some resources
-        time.sleep(0.5)
+        # Wait until the user selectes real time sorting
+        while self.real_time and not self.exit:
+            # Organize files every half a second to save some resources
+            self.organize_files()
+            time.sleep(0.5)
 
     # Sets the exit flag that stops the mainloop of real time sorting
     def set_exit_flag(self):
@@ -314,9 +304,7 @@ class FileOrganizer:
     # Sets the folder sort flag
     def set_sort_folders(self, value: bool):
         self.sort_folders = value
-        self.cache_manager.save_setting(Setting("sort_folders", int(value)))
 
     # Sets the real time sorting flag
     def set_auto_sort(self, value: bool):
         self.real_time = value
-        self.cache_manager.save_setting(Setting("auto_sort", int(value)))

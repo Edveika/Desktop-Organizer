@@ -1,5 +1,7 @@
 from PySide6 import QtWidgets, QtGui
 from FileOrganizer import FileOrganizer
+from Setting import Setting
+from CacheManager import CacheManager
 import sys
 import os
 
@@ -37,14 +39,12 @@ class SystemTray:
                 raise Exception("Your system does not support QSystemTrayIcon functionality")
             menu = QtWidgets.QMenu()
 
-            auto_organize = menu.addAction("Auto-Organize")
-            auto_organize.setCheckable(True)
-            auto_organize.triggered.connect(lambda: self.set_auto_organize(auto_organize))
-
-            organize_folders = menu.addAction("Organize Folders")
-            organize_folders.setCheckable(True)
-            organize_folders.triggered.connect(lambda: self.set_organize_folders(organize_folders))
-
+            self.auto_organize = menu.addAction("Auto-Organize")
+            self.auto_organize.setCheckable(True)
+            self.auto_organize.triggered.connect(lambda: self.set_auto_organize(self.auto_organize))
+            self.organize_folders = menu.addAction("Organize Folders")
+            self.organize_folders.setCheckable(True)
+            self.organize_folders.triggered.connect(lambda: self.set_organize_folders(self.organize_folders))
             organize_desktop = menu.addAction("Organize Desktop")
             organize_desktop.triggered.connect(self.file_organizer.organize_files)
 
@@ -54,17 +54,35 @@ class SystemTray:
             system_tray.setToolTip("Right click to access settings")
             system_tray.setContextMenu(menu)
             system_tray.show()
+
+            def load_settings(): 
+                nonlocal self
+                settings= self.cache_manager.get_settings()
+
+                if not settings:
+                    return
+                
+                self.auto_organize.setChecked(bool(settings["auto_sort"]))
+                self.organize_folders.setChecked(bool(settings["sort_folders"]))
+
+            load_settings()
+
             sys.exit(app.exec())
 
+        self.cache_manager = CacheManager()
+
         create_system_tray()
+            
 
     # Sets the file organizer's auto sort flag
     def set_auto_organize(self, checkmark: QtGui.QAction):
         self.file_organizer.set_auto_sort(checkmark.isChecked())
+        self.cache_manager.save_setting(Setting("auto_sort", int(checkmark.isChecked())))
 
     # Sets the file organizer's sort folders flag
     def set_organize_folders(self, checkmark: QtGui.QAction):
         self.file_organizer.set_sort_folders(checkmark.isChecked())
+        self.cache_manager.save_setting(Setting("sort_folders", int(checkmark.isChecked())))
 
     # Closes the application
     def close_system_tray(self):
